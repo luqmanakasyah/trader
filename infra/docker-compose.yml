@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  ib-gateway:
+    build: ../apps/gateway
+    container_name: ib-gateway
+    env_file:
+      - ./deploy/env.gateway
+    restart: unless-stopped
+    networks:
+      - trader
+    ports:
+      - "4002:4002"
+    volumes:
+      - ./deploy/env.gateway:/env.gateway:ro
+
+  strategy:
+    build: ../apps/strategy
+    container_name: strategy
+    env_file:
+      - ./deploy/env.strategy
+    restart: unless-stopped
+    networks:
+      - trader
+    depends_on:
+      - ib-gateway
+      - redis
+      - postgres
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./deploy/env.strategy:/env.strategy:ro
+
+  monitor:
+    build: ../apps/monitor
+    container_name: monitor
+    restart: unless-stopped
+    networks:
+      - trader
+    ports:
+      - "9100:9100"
+
+  redis:
+    image: redis:7.2
+    container_name: redis
+    restart: unless-stopped
+    networks:
+      - trader
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres:16.2
+    container_name: postgres
+    env_file:
+      - ./deploy/env.postgres
+    restart: unless-stopped
+    networks:
+      - trader
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: prometheus
+    restart: unless-stopped
+    networks:
+      - trader
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./deploy/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: grafana
+    restart: unless-stopped
+    networks:
+      - trader
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./deploy/grafana-provisioning:/etc/grafana/provisioning
+
+networks:
+  trader:
+    driver: bridge
+
+volumes:
+  pgdata:
+    driver: local

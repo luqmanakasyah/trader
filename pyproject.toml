@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "trader"
+version = "0.1.1"
+description = "IBKR trading bot monorepo"
+authors = ["Your Name <your@email.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+ibapi = "^9.81.1"
+pandas = "^2.2.2"
+numpy = "^1.26.4"
+requests = "^2.31.0"
+prometheus_client = "^0.19.0"
+psycopg2 = "^2.9.9"
+redis = "^5.0.4"
+
+[tool.poetry.dev-dependencies]
+ruff = "^0.4.7"
+black = "^24.4.0"
+bandit = "^1.7.7"
+pytest = "^8.2.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

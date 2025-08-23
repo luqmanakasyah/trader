@@ -1,0 +1,21 @@
+name: Deploy
+on:
+  push:
+    tags:
+      - "v*.*.*"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: SSH Deploy to OVH VPS
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd ~/trader
+            git pull
+            bash infra/deploy/deploy.sh

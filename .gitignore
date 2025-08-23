@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.eggs/
+.build/
+.dist/
+
+# Virtual envs
+.venv/
+venv/
+
+# Tools
+.pytest_cache/
+.mypy_cache/
+.cache/
+.ruff_cache/
+
+# OS
+.DS_Store
+
+# Env / secrets
+.env
+.env.*
+infra/deploy/env.*
+
+# Logs
+logs/
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Poetry
+poetry.lock
+
+# Misc
+*.sqlite3
