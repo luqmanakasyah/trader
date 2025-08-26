@@ -2,7 +2,6 @@
 Risk manager: notional caps, drawdown caps, order rate limits, kill switch.
 """
 import time
-from typing import Dict
 
 class RiskManager:
     def __init__(self):

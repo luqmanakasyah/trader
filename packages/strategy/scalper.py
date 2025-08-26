@@ -1,9 +1,7 @@
 """
 Trivial scalper strategy: SMA cross, fractional shares, flat by EOD.
 """
-from typing import Any
 import pandas as pd
-import numpy as np
 import datetime
 from packages.core.logger import get_logger
 
@@ -21,12 +19,11 @@ class ScalperStrategy:
         # Simulate deterministic market data loop to guarantee at least one order
         for symbol in self.symbols:
             base = 100.0
-            for i in range(5):  # enough points to fill fast SMA window
+            for i in range(5):  # deterministic monotonic increase
                 price = base + i
-                self.data[symbol].loc[datetime.datetime.now()] = price
-            sma_fast = self.data[symbol]["price"].rolling(window=5).mean().iloc[-1]
-            sma_slow = self.data[symbol]["price"].rolling(window=20).mean().iloc[-1]
-            # With monotonic increase, fast SMA == slow SMA for first 5 points (slow uses all data). Force a buy.
+                ts = datetime.datetime.now()
+                self.data[symbol].loc[ts, 'price'] = price
+            # Force a buy using latest price.
             notional = self.data[symbol]["price"].iloc[-1] * 0.1
             if self.risk.check_order(notional):
                 self.logger.info(f"Buy {symbol} @ {self.data[symbol]['price'].iloc[-1]}")

@@ -1,7 +1,6 @@
 """
 Unit test for RiskManager.
 """
-import pytest
 from packages.risk.risk import RiskManager
 
 def test_order_limits():

@@ -1,7 +1,6 @@
 """
 Unit test for IBKRClient reconnect logic (mocked).
 """
-import pytest
 from unittest.mock import patch
 from packages.ibkr.ibkr_client import IBKRClient
 

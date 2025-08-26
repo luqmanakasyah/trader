@@ -3,7 +3,6 @@ IBKR API wrapper with reconnect logic.
 """
 from ibapi.client import EClient
 from ibapi.wrapper import EWrapper
-from ibapi.contract import Contract
 import time
 import threading
 from typing import Optional
